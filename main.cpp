@@ -1,11 +1,11 @@
 #include <iostream>
 #include <vector>
-using namespace std;
+
 
 struct NetworkParameters
 {
         int depth; //Total number of layers.
-        vector<int> NodesCount;//Number of nodes in layers all layers.(0==Input, Last==Output, Rest==Hidden)
+        std::vector<int> NodesCount;//Number of nodes in layers all layers.(0==Input, Last==Output, Rest==Hidden)
 };
 
 class Node{
@@ -18,7 +18,7 @@ class Node{
         void setBias(float biasVal){this->bias = biasVal;}
         float getBias(){return this -> bias;}
 
-        float calculateValue(vector<Node> input, vector<float> weights);
+        float calculateValue(std::vector<Node> input, std::vector<float> weights);
 };
 
 
@@ -29,8 +29,8 @@ class Network{
 
         NetworkParameters parameters;
 
-        vector<vector<Node>> layers; //2 dimensional vector storing layers. First layer being input and last layer being output.
-        vector<vector<vector<float>>> weights; //3 dimensional vector containing the weights to use in the edges.
+        std::vector<std::vector<Node>> layers; //2 dimensional vector storing layers. First layer being input and last layer being output.
+        std::vector<std::vector<std::vector<float>>> weights; //3 dimensional vector containing the weights to use in the edges.
 
     public:
         Network(NetworkParameters param, bool isRandom = true): parameters(param){}
@@ -40,11 +40,11 @@ class Network{
 
         //Build the first gen network on random values.
         void buildNetwork(); //Function to build the entire network.
-        void buildLayer(vector<Node> &nodes, int numberOfNodes); //Function to build layers of the networks. Specify input, hidden vs output layer initiation.
+        void buildLayer(std::vector<Node> &nodes, int numberOfNodes); //Function to build layers of the networks. Specify input, hidden vs output layer initiation.
 
 
         //Functions to retrieve private attributes of the object.
-        vector<int> getNodeCount(){return this -> parameters.NodesCount;}
+        std::vector<int> getNodeCount(){return this -> parameters.NodesCount;}
         int getDepth(){return this -> parameters.depth;}
 };
 
@@ -59,7 +59,7 @@ Network::Network(NetworkParameters param, bool isRandom = true){
 }
 
 //Function to build a layer.
-void Network::buildLayer(vector<Node> &nodes, int numberOfNodes){
+void Network::buildLayer(std::vector<Node> &nodes, int numberOfNodes){
 
     for(int i = 0; i < numberOfNodes; i++){
             Node node = Node();
