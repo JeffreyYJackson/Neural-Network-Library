@@ -100,45 +100,25 @@ void Network::buildWeightLayers() {
 
 //Main function for testing
 int main(){
-    
     std::vector<int> nodeLayers {5, 10, 5, 2};
-
     Network myNetwork = Network(nodeLayers);
-
-
     myNetwork.buildWeightLayers();
 
-
-    
-int sum = 0;
-
-    
-    
-
+    int sum = 0;
     for (std::vector<std::vector<float>> k: myNetwork.weights){
         for(std::vector<float> i: k){
-            
             int count = 0;
-
-            for(float j: i){
-
+            for(float j: i) {
                 std::cout << j << "\n";
 
                 count++;
                 sum++;
             }
-        
             std::cout<<count<<"\n";
-         
         }
-
     }
-
     
     std::cout<<sum<<"\n";
-
-
-    
 
     return 0;
 }
