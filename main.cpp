@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-#include<random>
+#include <random>
 
 class Node{
     private:
@@ -31,6 +31,10 @@ class Network{
         void createWeightLayer(int targetConnection); 
         void createWeights(int targetConnect, int targetNode);
         void buildWeightLayers();
+
+        std::mt19937 gen;//Random Device
+        float generateGaussian(double mean, double standardDev);//Create random floar values from a normal distribution.
+        
     public:
         Network(std::vector<int> nodesCount, bool isRandom = true);
         //Functions to import and save networks.
@@ -44,7 +48,7 @@ class Network{
 };
 
 //Constructor function.
-Network::Network(std::vector<int> nodesCount, bool isRandom) : nodesCount(nodesCount), depth(nodesCount.size()) {
+Network::Network(std::vector<int> nodesCount, bool isRandom) : nodesCount(nodesCount), depth(nodesCount.size()), gen(std::random_device{}()) {
     this->buildNetworkLayers();
     this->buildWeightLayers();
 }
@@ -68,18 +72,11 @@ void Network::buildNetworkLayers(){
     }
 }
 
-//Creates weights at random connecting a node to all of the nodes in the previous layer.
+//Creates weights at random connecting a node to all of the nodes in the previous layer(nth connection between layers (layer n and n+1). n number of weights).
 void Network::createWeights(int targetConnect, int targetNode) {
-    //Set up random device
-    std::random_device rd;
-    std::mt19937 gen(rd());
-
-    //A normal distribution with a mean of 0 and a variance of 2/inputNumber for He initialization.
-    std::normal_distribution<> dist(0, sqrt((double)2/this->nodesCount.at(targetConnect)));
-
-    //Creating random weights for the nth connection between layers (layer n and n+1). n number of weights 
     for(int i = 0; i < this->nodesCount.at(targetConnect); i++){
-        this->weights.at(targetConnect).at(targetNode).push_back(dist(gen));
+        //A normal distribution with a mean of 0 and a variance of 2/inputNumber for He initialization.
+        this->weights.at(targetConnect).at(targetNode).push_back(this->generateGaussian(0, sqrt((double)2/this->nodesCount.at(targetConnect))));
     }
 }
 
@@ -124,12 +121,17 @@ void Network::printWeight(){
     std::cout<<sum<<"\n";
 }
 
+float Network::generateGaussian(double mean, double standardDev){
+    std::normal_distribution<> dist(mean, standardDev);
+    return dist(this->gen);
+}
+
 //Main function for testing
 int main(){
-    std::vector<int> nodeLayers {5, 10, 5, 2};
+    std::vector<int> nodeLayers {784, 20, 20, 10};
     Network myNetwork = Network(nodeLayers);
 
     myNetwork.printWeight();
-
+    
     return 0;
 }
