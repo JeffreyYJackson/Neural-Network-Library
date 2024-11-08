@@ -105,7 +105,6 @@ void Network::buildWeightLayers() {
 
 void Network::printWeight(){
     int sum = 0;
-    //std::vector<std::vector<std::vector<float>>> weights;
 
     for (std::vector<std::vector<float>> k: this->weights){
         for(std::vector<float> i: k){
