@@ -3,29 +3,31 @@
 
 //Builds all of the weights between each layers of the Network.
 void Network::buildWeightLayers() {
+    this->weights = std::vector<std::vector<std::vector<float>>>(this->depth);
     for(unsigned int i = 0; i < this->depth - 1; i++){
-        std::vector<std::vector<float>> a;
-        this->weights.push_back(a);
-
         this->createWeightLayer(i);
     }
 }
 
 //Creates a group of weights which contains all the weights connecting all of the nodes in a layer to the nodes in the previous layer.
 void Network::createWeightLayer(unsigned int targetConnect) {
+    //Build weight vectors.
+    this->weights.at(targetConnect) = std::vector<std::vector<float>>(this->nodesCount.at(targetConnect + 1));
+    
+    //Call function to generate random weights for all nodes.
     for (unsigned int i = 0; i < this->nodesCount.at(targetConnect + 1); i++){
-        std::vector<float> a;
-        this->weights.at(targetConnect).push_back(a);
-
         this->createWeights(targetConnect, i);
     }
 }
 
 //Creates weights at random connecting a node to all of the nodes in the previous layer(nth connection between layers (layer n and n+1). n number of weights).
 void Network::createWeights(unsigned int targetConnect, unsigned int targetNode) {
+    //Build weights.
+    this->weights.at(targetConnect).at(targetNode) = std::vector<float>(this->nodesCount.at(targetConnect));
+
     for(unsigned int i = 0; i < this->nodesCount.at(targetConnect); i++){
         //A normal distribution with a mean of 0 and a variance of 2/inputNumber for He initialization.
-        this->weights.at(targetConnect).at(targetNode).push_back(this->generateGaussian(0, sqrt((double)2/this->nodesCount.at(targetConnect))));
+        this->weights.at(targetConnect).at(targetNode).at(i) = this->generateGaussian(0, sqrt((double)2/this->nodesCount.at(targetConnect)));
     }
 }
 
