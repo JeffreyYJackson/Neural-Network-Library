@@ -7,10 +7,12 @@
 
 //Main function for testing
 int main(){
-    std::vector<unsigned int> nodeLayers = {784, 20, 20, 10};
+    std::vector<unsigned int> nodeLayers = {3, 20, 20, 10};
     Network myNetwork = Network(nodeLayers);
 
-    myNetwork.printWeight();
+    if (myNetwork.input({1, 4, 3}) == 0) return 0;
+
+    myNetwork.printLayerVals(0);
     
     return 0;
 }

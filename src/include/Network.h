@@ -21,7 +21,6 @@ class Network{
         void createWeightLayer(unsigned int targetConnection); 
         void createWeights(unsigned int targetConnect, unsigned int targetNode);
         
-
         std::mt19937 gen;//Random Device
         float generateGaussian(double mean, double standardDev);//Create random floar values from a normal distribution.
         
@@ -31,8 +30,11 @@ class Network{
         void import();////////////////////////////////////////////////////////////////
         void save();
 
+        int input(std::vector<float> inputs);
+
         //Functions to retrieve private attributes of the object.
         std::vector<unsigned int> getNodeCount() {return this -> nodesCount;}
         unsigned int getDepth() {return this -> depth;}
         void printWeight();
+        void printLayerVals(unsigned int _i);
 };
