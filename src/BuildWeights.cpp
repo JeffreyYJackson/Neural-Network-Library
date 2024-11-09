@@ -5,7 +5,7 @@
 void Network::buildWeightLayers() {
     for(unsigned int i = 0; i < this->depth - 1; i++){
         std::vector<std::vector<float>> a;
-        this->weights.push_back(a);/////////////////////////////////Naming
+        this->weights.push_back(a);
 
         this->createWeightLayer(i);
     }
@@ -14,8 +14,8 @@ void Network::buildWeightLayers() {
 //Creates a group of weights which contains all the weights connecting all of the nodes in a layer to the nodes in the previous layer.
 void Network::createWeightLayer(unsigned int targetConnect) {
     for (unsigned int i = 0; i < this->nodesCount.at(targetConnect + 1); i++){
-        std::vector<float> b; ///////////////////////////////////////////////////// Naming
-        this->weights.at(targetConnect).push_back(b);
+        std::vector<float> a;
+        this->weights.at(targetConnect).push_back(a);
 
         this->createWeights(targetConnect, i);
     }

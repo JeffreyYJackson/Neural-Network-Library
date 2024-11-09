@@ -7,10 +7,11 @@
 
 //Main function for testing
 int main(){
-    std::vector<unsigned int> nodeLayers = {784, 20, 20, 10};
+    std::vector<unsigned int> nodeLayers = {200, 2, 2, 2};
     Network myNetwork = Network(nodeLayers);
-    
-    myNetwork.printWeight();
 
+    for (unsigned int i: myNetwork.getNodeCount()){
+        std::cout << i << "\n";
+    }
     return 0;
 }

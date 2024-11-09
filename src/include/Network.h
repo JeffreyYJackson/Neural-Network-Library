@@ -2,6 +2,7 @@
 
 #include<vector>
 #include<random>
+#include<iostream>
 
 #include"Node.h"
 
@@ -13,8 +14,7 @@ class Network{
         std::vector<std::vector<Node>> layers; //2 dimensional vector storing layers. First layer being input and last layer being output.
         std::vector<std::vector<std::vector<float>>> weights; //3 dimensional vector containing the weights to use in the edges.
 
-        //Build the first gen network on random values.
-        void buildLayer(std::vector<Node> nodes, unsigned int numberOfNodes); //Function to build layers of the networks. Specify input, hidden vs output layer initiation.
+        //Build network node layers.
         void buildNetworkLayers();
 
         void buildWeightLayers();
