@@ -2,8 +2,8 @@
 #include <vector>
 #include <random>
 
-#include "include/Node.h"
-#include "include/Network.h"
+#include "..\include/Node.h"
+#include "..\include/Network.h"
 
 //Main function for testing
 int main(){
