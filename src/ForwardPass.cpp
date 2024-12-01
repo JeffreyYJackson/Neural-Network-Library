@@ -18,6 +18,7 @@ int ForwardPass::input(Network &Network, std::vector<float> inputs){
     return 1;
 }
 
+//Calculation is done using the weight layers as a reference(the spacing inbetween layers. i.e. index 0 is going from layer 1 to 2). 
 void ForwardPass::pass(Network &Network){
     for(unsigned int i = 0; i < Network.depth - 1; i++){
         calculateLayerValue(Network.layers.at(i + 1), Network.layers.at(i), Network.weights.at(i));
