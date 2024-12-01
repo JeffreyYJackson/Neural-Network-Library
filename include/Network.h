@@ -24,4 +24,5 @@ class Network{
         void save();
 
         void printWeight();
+        void printLayerVals(unsigned int _i);
 };
