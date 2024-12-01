@@ -1,4 +1,4 @@
-#include "include/Network.h"
+#include "..\include/Network.h"
 #include <iostream>
 
 //Builds all of the weights between each layers of the Network.

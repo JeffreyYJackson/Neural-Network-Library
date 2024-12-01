@@ -1,4 +1,4 @@
-#include "include/Network.h"
+#include "..\include/Network.h"
 
 int Network::input(std::vector<float> inputs){
     //Check for error
@@ -20,4 +20,8 @@ void Network::printLayerVals(unsigned int _i){
     for (Node i: this->layers.at(_i)){
         std::cout  << i.getValue() << "\n";
     }
+}
+
+void Network::calculateNodeValue(unsigned int layer, unsigned int position){
+    
 }

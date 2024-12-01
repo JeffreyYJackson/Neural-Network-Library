@@ -1,5 +1,5 @@
-#include "include/Network.h"
-#include "include/Node.h"
+#include "..\include/Network.h"
+#include "..\include/Node.h"
 
 #include <vector>
 #include <iostream>

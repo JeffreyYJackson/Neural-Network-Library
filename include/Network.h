@@ -37,4 +37,8 @@ class Network{
         unsigned int getDepth() {return this -> depth;}
         void printWeight();
         void printLayerVals(unsigned int _i);
+
+
+        void calculateNodeValue(unsigned int layer, unsigned int position);
+
 };

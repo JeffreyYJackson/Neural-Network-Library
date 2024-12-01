@@ -17,5 +17,5 @@ class Node{
         void setValue(float _value);
         float getValue();
 
-        float calculateValue(std::vector<Node> input, std::vector<float> weights);
+        //float calculateValue(std::vector<Node> input, std::vector<float> weights);
 };
