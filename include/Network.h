@@ -23,12 +23,6 @@ class Network{
         void import();////////////////////////////////////////////////////////////////
         void save();
 
-
-        int input(std::vector<float> inputs);
-
         void printWeight();
         void printLayerVals(unsigned int _i);
-
-        void calculateNodeValue(unsigned int layer, unsigned int position);
-
 };

@@ -1,4 +1,4 @@
 class ActivationFunction{
     public:
-        static double ReLU(double value);
+        static float ReLU(float value);
 };

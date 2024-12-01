@@ -1,10 +1,11 @@
-#include <vector>
-
 #include "..\include/ActivationFunction.h"
 
 #include "..\include\Network.h"
 #include "..\include\LayerBuilder.h"
 #include "..\include\WeightBuilder.h"
+#include "..\include\ForwardPass.h"
+
+#include<iostream>
 
 //Main function for testing
 int main(){
@@ -16,9 +17,15 @@ int main(){
 
     myNetwork.printLayerVals(0);
 
-    if (myNetwork.input({1, 4, 3}) == 0) return 0;
+    if (ForwardPass::input(myNetwork ,{1, 4, 3, 1, 1}) == 0) return 0;
 
     myNetwork.printLayerVals(0);
+   
+    Node node;
+    node.bias = -3;
+    ForwardPass::calculateNodeValue(node, myNetwork.layers.at(0), myNetwork.weights.at(0).at(0));
+
+    std::cout<<"Node value: " << node.value << "\n";
 
     
     return 0;
