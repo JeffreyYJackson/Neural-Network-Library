@@ -1,8 +1,10 @@
 #include "..\include/Network.h"
 
 #include <iostream>
+#include <fstream>
 
 void Network::printWeight(){
+    std::cout << "Weigths:\n";
     int sum = 0;
     for (std::vector<std::vector<float>> k: this->weights){
         for(std::vector<float> i: k){
