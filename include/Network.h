@@ -2,6 +2,8 @@
 
 #include<vector>
 #include<random>
+#include<string>
+#include <fstream>
 
 #include"Node.h"
 
@@ -15,13 +17,13 @@ class Network{
         
         std::mt19937 gen;//Random Device
         float generateGaussian(double mean, double standardDev);//Create random floar values from a normal distribution.
-        
+
+        Network(){}
         Network(std::vector<unsigned int> _nodesCount) : 
             nodesCount(_nodesCount), depth(nodesCount.size()), gen(std::random_device{}()) {}
-        
         //Functions to import and save networks.
-        void import();////////////////////////////////////////////////////////////////
-        void save();
+        static void import(Network &Network, std::string fileName);////////////////////////////////////////////////////////////////
+        static void save(Network &Network, std::string fileName);
 
         void printWeight();
         void printLayerVals(unsigned int _i);

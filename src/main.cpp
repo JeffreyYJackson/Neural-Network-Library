@@ -9,24 +9,38 @@
 
 //Main function for testing
 int main(){
-    std::vector<unsigned int> nodeLayers = {1, 1};
+    /**/
+    std::vector<unsigned int> nodeLayers = {2, 3};
     Network myNetwork = Network(nodeLayers);
     
     LayerBuilder::buildLayers(myNetwork);
     WeightBuilder::buildWeightLayers(myNetwork);
 
-    if (ForwardPass::input(myNetwork ,{5}) == 0) return 0;
-
-    myNetwork.printLayerVals(0);
-    std::cout<<"\n";
     myNetwork.printWeight();
-    std::cout<<"\n";
-    myNetwork.printLayerVals(1);
-    std::cout<<"\n";
-    
-    ForwardPass::pass(myNetwork);
-    
-    myNetwork.printLayerVals(1);
-    
+
+    myNetwork.save(myNetwork, "test.txt");
+    /**/
+
+    /**/
+    Network newNetwork;
+    newNetwork.import(newNetwork, "test.txt");
+
+    std::cout<< "Depth: " << newNetwork.depth << "\n";
+    std::cout<< "Nodes:\n";
+    for(unsigned int i = 0; i < newNetwork.depth; i++){
+        std::cout << newNetwork.nodesCount.at(i) << "\n";
+    }
+
+    std::cout<< "Biases:\n";
+    for (std::vector<Node> i : newNetwork.layers) {
+        for (Node j : i){
+            std::cout << j.bias;
+        }
+        std::cout << "\n";
+    }
+
+    newNetwork.printWeight();
+
+    /**/
     return 0;
 }
