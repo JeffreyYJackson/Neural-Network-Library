@@ -9,7 +9,7 @@
 
 //Main function for testing
 int main(){
-    /*
+    /**/
     std::vector<unsigned int> nodeLayers = {2, 3};
     Network myNetwork = Network(nodeLayers);
     
@@ -19,7 +19,7 @@ int main(){
     myNetwork.printWeight();
 
     myNetwork.save(myNetwork, "test.txt");
-    */
+    /**/
 
     /**/
     Network newNetwork;
