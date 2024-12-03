@@ -15,7 +15,7 @@ void Network::save(Network &Network, std::string fileName){
     //Open File
     std::ofstream networkFile;
     networkFile.open(fileName);
-    if (!networkFile.is_open()) std::cout << "Unable to open file.";
+    if (!networkFile.is_open()) {std::cout << "Unable to open file."; return;}
 
     //Save info
     networkFile << Network.depth << "\n";
@@ -30,7 +30,7 @@ void Network::import(Network &Network, std::string fileName){
     //Open File
     std::ifstream networkFile;
     networkFile.open(fileName);
-    if (!networkFile.is_open()) std::cout << "Unable to open file.";
+    if (!networkFile.is_open()) {std::cout << "Unable to open file."; return;}
 
     //Import info
     networkFile >> Network.depth; 
@@ -84,8 +84,8 @@ void saveBias(Network &Network, std::ofstream &networkFile){
         for (unsigned int j = 0; j < Network.nodesCount.at(i); j++){
             networkFile << Network.layers.at(i).at(j).bias << ' '; 
         }
+        networkFile << "\n";
     }
-    networkFile << "\n";
 }
 
 void saveWeights(Network &Network, std::ofstream &networkFile){

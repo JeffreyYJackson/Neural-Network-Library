@@ -21,8 +21,9 @@ class Network{
         Network(){}
         Network(std::vector<unsigned int> _nodesCount) : 
             nodesCount(_nodesCount), depth(nodesCount.size()), gen(std::random_device{}()) {}
+            
         //Functions to import and save networks.
-        static void import(Network &Network, std::string fileName);////////////////////////////////////////////////////////////////
+        static void import(Network &Network, std::string fileName);
         static void save(Network &Network, std::string fileName);
 
         void printWeight();
