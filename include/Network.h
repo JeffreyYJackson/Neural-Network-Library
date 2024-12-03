@@ -13,20 +13,40 @@ class Network{
         std::vector<unsigned int> nodesCount;
         unsigned int depth;
 
-        std::vector<std::vector<Node>> layers; //2 dimensional vector storing layers. First layer being input and last layer being output.
-        std::vector<std::vector<std::vector<float>>> weights; //3 dimensional vector containing the weights to use in the edges.
+        std::vector<std::vector<Node>> layers;
+        std::vector<std::vector<std::vector<float>>> weights;
         
-        std::mt19937 gen;//Random Device
-        float generateGaussian(double mean, double standardDev);//Create random floar values from a normal distribution.
+        //Normal Dist Gen
+        std::mt19937 gen;
+        float generateGaussian(double mean, double standardDev);
 
-        Network(){}
-        Network(std::vector<unsigned int> _nodesCount) : 
-            nodesCount(_nodesCount), depth(nodesCount.size()), gen((unsigned int) time(NULL)) {}
-            
-        //Functions to import and save networks.
+        Network(std::string fileName);
+        Network(std::vector<unsigned int> _nodesCount);
+        
+        static void buildNodeLayers(Network &Network);
+        static void buildWeightLayers(Network &Network);
+
         static void import(Network &Network, std::string fileName);
         static void save(Network &Network, std::string fileName);
 
+        static int input(Network &Network, std::vector<float> inputs);
+        static void pass(Network &Network);
+
         void printWeight();
         void printLayerVals(unsigned int _i);
+    private:
+        //Utility Functions
+        static void createWeightLayer(unsigned int targetConnection, Network &Network); 
+        static void createWeights(unsigned int targetConnect, unsigned int targetNode, Network &Network);
+
+        static void saveNodesCount(Network &Network, std::ofstream &networkFile);
+        static void saveBias(Network &Network, std::ofstream &networkFile);
+        static void saveWeights(Network &Network, std::ofstream &networkFile);
+
+        static void importNodesCount(Network &Network, std::ifstream &networkFile);
+        static void importBias(Network &Network, std::ifstream &networkFile);
+        static void importWeights(Network &Network, std::ifstream &networkFile);
+
+        static void calculateLayerValue(std::vector<Node> &layerNodes, std::vector<Node> &inputLayerNodes, std::vector<std::vector<float>> &weightLayer);
+        static void calculateNodeValue(Node &targetNode, std::vector<Node> inputNodes, std::vector<float> weights);
 };

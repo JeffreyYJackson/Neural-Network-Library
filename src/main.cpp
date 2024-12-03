@@ -1,29 +1,29 @@
 #include "..\include/ActivationFunction.h"
 
 #include "..\include\Network.h"
-#include "..\include\LayerBuilder.h"
-#include "..\include\WeightBuilder.h"
-#include "..\include\ForwardPass.h"
 
 #include<iostream>
 
 //Main function for testing
 int main(){
-    /**/
-    std::vector<unsigned int> nodeLayers = {2, 3, 4};
-    Network myNetwork = Network(nodeLayers);
     
-    LayerBuilder::buildLayers(myNetwork);
-    WeightBuilder::buildWeightLayers(myNetwork);
+    std::vector<unsigned int> nodeLayers = {3, 4};
+    Network myNetwork = Network(nodeLayers);
 
+    /*
+    if(!Network::input(myNetwork, {200, 3.5})){return 0;}
+
+    myNetwork.printLayerVals(0);
+
+    Network::pass(myNetwork);
+    myNetwork.printLayerVals(2);
+    */
+    
     myNetwork.printWeight();
 
     myNetwork.save(myNetwork, "test.txt");
-    /**/
-
-    /**/
-    Network newNetwork;
-    newNetwork.import(newNetwork, "test.txt");
+    
+    Network newNetwork = Network("test.txt");
 
     std::cout<< "Depth: " << newNetwork.depth << "\n";
     std::cout<< "Nodes:\n";
@@ -41,6 +41,6 @@ int main(){
 
     newNetwork.printWeight();
 
-    /**/
+    
     return 0;
 }
