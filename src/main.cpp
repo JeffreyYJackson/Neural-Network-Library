@@ -10,7 +10,7 @@
 //Main function for testing
 int main(){
     /**/
-    std::vector<unsigned int> nodeLayers = {2, 3};
+    std::vector<unsigned int> nodeLayers = {2, 3, 4};
     Network myNetwork = Network(nodeLayers);
     
     LayerBuilder::buildLayers(myNetwork);
