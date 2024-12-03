@@ -4,6 +4,7 @@
 #include<random>
 #include<string>
 #include <fstream>
+#include <time.h>
 
 #include"Node.h"
 
@@ -20,7 +21,7 @@ class Network{
 
         Network(){}
         Network(std::vector<unsigned int> _nodesCount) : 
-            nodesCount(_nodesCount), depth(nodesCount.size()), gen(std::random_device{}()) {}
+            nodesCount(_nodesCount), depth(nodesCount.size()), gen((unsigned int) time(NULL)) {}
             
         //Functions to import and save networks.
         static void import(Network &Network, std::string fileName);
