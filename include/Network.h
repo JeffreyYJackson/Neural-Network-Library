@@ -23,30 +23,30 @@ class Network{
         Network(std::string fileName);
         Network(std::vector<unsigned int> _nodesCount);
         
-        static void buildNodeLayers(Network &Network);
-        static void buildWeightLayers(Network &Network);
+        void buildNodeLayers();
+        void buildWeightLayers();
 
-        static void import(Network &Network, std::string fileName);
-        static void save(Network &Network, std::string fileName);
+        void save(std::string fileName);
+        void import(std::string fileName);
 
-        static int input(Network &Network, std::vector<float> inputs);
-        static void pass(Network &Network);
+        int input(std::vector<float> inputs);
+        void pass();
 
         void printWeight();
         void printLayerVals(unsigned int _i);
     private:
-        //Utility Functions
-        static void createWeightLayer(unsigned int targetConnection, Network &Network); 
-        static void createWeights(unsigned int targetConnect, unsigned int targetNode, Network &Network);
+        /**********Utility Functions**********/
+        void createWeightLayer(unsigned int targetConnection); 
+        void createWeights(unsigned int targetConnect, unsigned int targetNode);
 
-        static void saveNodesCount(Network &Network, std::ofstream &networkFile);
-        static void saveBias(Network &Network, std::ofstream &networkFile);
-        static void saveWeights(Network &Network, std::ofstream &networkFile);
+        void saveNodesCount(std::ofstream &networkFile);
+        void saveBias(std::ofstream &networkFile);
+        void saveWeights(std::ofstream &networkFile);
 
-        static void importNodesCount(Network &Network, std::ifstream &networkFile);
-        static void importBias(Network &Network, std::ifstream &networkFile);
-        static void importWeights(Network &Network, std::ifstream &networkFile);
+        void importNodesCount(std::ifstream &networkFile);
+        void importBias(std::ifstream &networkFile);
+        void importWeights(std::ifstream &networkFile);
 
         static void calculateLayerValue(std::vector<Node> &layerNodes, std::vector<Node> &inputLayerNodes, std::vector<std::vector<float>> &weightLayer);
-        static void calculateNodeValue(Node &targetNode, std::vector<Node> inputNodes, std::vector<float> weights);
+        static void calculateNodeValue(Node &targetNode, std::vector<Node> &inputNodes, std::vector<float> weights);
 };
