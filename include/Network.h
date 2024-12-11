@@ -7,6 +7,7 @@
 #include <time.h>
 
 #include"Node.h"
+#include "ActivationFunction.h"
 
 class Network{
     public:
@@ -16,13 +17,11 @@ class Network{
         std::vector<std::vector<Node>> layers;
         std::vector<std::vector<std::vector<float>>> weights;
         
-        //Normal Dist Gen
-        std::mt19937 gen;
-        float generateGaussian(double mean, double standardDev);
-
         Network(std::string fileName);
-        Network(std::vector<unsigned int> _nodesCount);
+        Network(std::vector<unsigned int> _nodesCount, ActivationType Type);
         
+        std::mt19937 gen;
+
         void buildNodeLayers();
         void buildWeightLayers();
 
@@ -36,6 +35,9 @@ class Network{
         void printLayerVals(unsigned int _i);
     private:
         /**********Utility Functions**********/
+        ActivationFunctionPtr ActivationFunctionPtrs;
+        ActivationType Type;
+
         void createWeightLayer(unsigned int targetConnection); 
         void createWeights(unsigned int targetConnect, unsigned int targetNode);
 
@@ -47,6 +49,6 @@ class Network{
         void importBias(std::ifstream &networkFile);
         void importWeights(std::ifstream &networkFile);
 
-        static void calculateLayerValue(std::vector<Node> &layerNodes, std::vector<Node> &inputLayerNodes, std::vector<std::vector<float>> &weightLayer);
-        static void calculateNodeValue(Node &targetNode, std::vector<Node> &inputNodes, std::vector<float> weights);
+        void calculateLayerValue(std::vector<Node> &layerNodes, std::vector<Node> &inputLayerNodes, std::vector<std::vector<float>> &weightLayer);
+        void calculateNodeValue(Node &targetNode, std::vector<Node> &inputNodes, std::vector<float> _weights);
 };

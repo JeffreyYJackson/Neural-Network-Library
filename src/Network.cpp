@@ -3,13 +3,16 @@
 
 #include <iostream>
 
-Network::Network(std::vector<unsigned int> _nodesCount) : nodesCount(_nodesCount), depth(nodesCount.size()), gen((unsigned int) time(NULL)) {
+Network::Network(std::vector<unsigned int> _nodesCount, ActivationType _Type) : nodesCount(_nodesCount), depth(nodesCount.size()), gen((unsigned int) time(NULL)), Type(_Type){
+    this->ActivationFunctionPtrs = ActivationFunction::SetNetworkFunctions(_Type);
+
     buildNodeLayers();
     buildWeightLayers();
 }
 
 Network::Network(std::string fileName){
     import(fileName);
+    this->ActivationFunctionPtrs = ActivationFunction::SetNetworkFunctions(this->Type);
 }
 
 void Network::buildNodeLayers(){
@@ -36,6 +39,7 @@ void Network::save(std::string fileName){
     if (!networkFile.is_open()) {std::cout << "Unable to open file."; return;}
 
     //Save info
+    networkFile << this->Type << "\n";
     networkFile << this->depth << "\n";
     saveNodesCount(networkFile);
     saveBias(networkFile);
@@ -51,6 +55,9 @@ void Network::import(std::string fileName){
     if (!networkFile.is_open()) {std::cout << "Unable to open file."; return;}
 
     //Import info
+    int type;
+    networkFile >> type;
+    this->Type = (ActivationType) type;
     networkFile >> this->depth; 
     importNodesCount(networkFile);
     importBias(networkFile);
@@ -106,11 +113,6 @@ void Network::printLayerVals(unsigned int _i){
     }
 }
 
-float Network::generateGaussian(double mean, double standardDev){
-    std::normal_distribution<> dist(mean, standardDev);
-    return (float)dist(this->gen);
-}
-
 void Network::saveNodesCount(std::ofstream &networkFile){
     for (unsigned int i = 0; i < this->depth; i++){
         networkFile << this->nodesCount.at(i) << ' ';
@@ -138,8 +140,9 @@ void Network::createWeights(unsigned int targetConnect, unsigned int targetNode)
     this->weights.at(targetConnect).at(targetNode) = std::vector<float>(this->nodesCount.at(targetConnect));
 
     for(unsigned int i = 0; i < this->nodesCount.at(targetConnect); i++){
-        //A normal distribution with a mean of 0 and a variance of 2/inputNumber for He initialization.
-        this->weights.at(targetConnect).at(targetNode).at(i) = this->generateGaussian(0, sqrt((double)2/this->nodesCount.at(targetConnect)));
+        
+        this->weights.at(targetConnect).at(targetNode).at(i) = ActivationFunctionPtrs.randomGen(this->nodesCount, this->gen, targetConnect);
+        //this->weights.at(targetConnect).at(targetNode).at(i) = this->generateGaussian(0, sqrt((double)2/this->nodesCount.at(targetConnect)));
     }
 }
 
@@ -202,15 +205,15 @@ void Network::importWeights(std::ifstream &networkFile){
 
 void Network::calculateLayerValue(std::vector<Node> &layerNodes, std::vector<Node> &inputLayerNodes, std::vector<std::vector<float>> &weightLayer){
     for (unsigned int i = 0; i < layerNodes.size(); i++){
-        Network::calculateNodeValue(layerNodes.at(i), inputLayerNodes, weightLayer.at(i));
+        calculateNodeValue(layerNodes.at(i), inputLayerNodes, weightLayer.at(i));
     }
 }
 
-void Network::calculateNodeValue(Node &targetNode, std::vector<Node> &inputNodes, std::vector<float> weights){
+void Network::calculateNodeValue(Node &targetNode, std::vector<Node> &inputNodes, std::vector<float> _weights){
     float nodeVal = targetNode.bias;
 
     for (unsigned int i = 0; i < inputNodes.size(); i++){
-        nodeVal += (inputNodes.at(i).value * weights.at(i));
+        nodeVal += (inputNodes.at(i).value * _weights.at(i));
     }
-    targetNode.value = ActivationFunction::ReLU(nodeVal);
+    targetNode.value = ActivationFunctionPtrs.activate(nodeVal);
 }

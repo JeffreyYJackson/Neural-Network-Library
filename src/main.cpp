@@ -1,4 +1,4 @@
-#include "..\include/ActivationFunction.h"
+
 
 #include "..\include\Network.h"
 
@@ -7,7 +7,7 @@
 //Main function for testing
 int main(){
     std::vector<unsigned int> nodeLayers = {3, 4};
-    Network myNetwork = Network(nodeLayers);
+    Network myNetwork = Network(nodeLayers, ReLU);
     myNetwork.save("test.txt");
 
     Network secondNetwork = Network("test.txt");
@@ -17,6 +17,8 @@ int main(){
     secondNetwork.printLayerVals(0);
 
     secondNetwork.pass();
+    
     secondNetwork.printLayerVals(1);
+    
     return 0;
 }
