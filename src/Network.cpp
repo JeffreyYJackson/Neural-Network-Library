@@ -3,7 +3,9 @@
 
 #include <iostream>
 
-Network::Network(std::vector<unsigned int> _nodesCount) : nodesCount(_nodesCount), depth(nodesCount.size()), gen((unsigned int) time(NULL)) {
+Network::Network(std::vector<unsigned int> _nodesCount, ActivationType Type) : nodesCount(_nodesCount), depth(nodesCount.size()), gen((unsigned int) time(NULL)){
+    this->ActivationFunctionPtrs = ActivationFunction::SetNetworkFunctions(Type);
+
     buildNodeLayers();
     buildWeightLayers();
 }
@@ -202,15 +204,15 @@ void Network::importWeights(std::ifstream &networkFile){
 
 void Network::calculateLayerValue(std::vector<Node> &layerNodes, std::vector<Node> &inputLayerNodes, std::vector<std::vector<float>> &weightLayer){
     for (unsigned int i = 0; i < layerNodes.size(); i++){
-        Network::calculateNodeValue(layerNodes.at(i), inputLayerNodes, weightLayer.at(i));
+        calculateNodeValue(layerNodes.at(i), inputLayerNodes, weightLayer.at(i));
     }
 }
 
-void Network::calculateNodeValue(Node &targetNode, std::vector<Node> &inputNodes, std::vector<float> weights){
+void Network::calculateNodeValue(Node &targetNode, std::vector<Node> &inputNodes, std::vector<float> _weights){
     float nodeVal = targetNode.bias;
 
     for (unsigned int i = 0; i < inputNodes.size(); i++){
-        nodeVal += (inputNodes.at(i).value * weights.at(i));
+        nodeVal += (inputNodes.at(i).value * _weights.at(i));
     }
-    targetNode.value = ActivationFunction::ReLU(nodeVal);
+    targetNode.value = this->ActivationFunctionPtrs.activationFunction(nodeVal);
 }
