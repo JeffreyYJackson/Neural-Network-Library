@@ -7,7 +7,7 @@
 #include <time.h>
 
 #include"Node.h"
-#include "..\include/ActivationFunction.h"
+#include "ActivationFunction.h"
 
 class Network{
     public:
@@ -20,6 +20,8 @@ class Network{
         Network(std::string fileName);
         Network(std::vector<unsigned int> _nodesCount, ActivationType Type);
         
+        std::mt19937 gen;
+
         void buildNodeLayers();
         void buildWeightLayers();
 
@@ -34,9 +36,6 @@ class Network{
     private:
         /**********Utility Functions**********/
         ActivationFunctionPtr ActivationFunctionPtrs;
-
-        std::mt19937 gen;
-        float generateGaussian(double mean, double standardDev);
 
         void createWeightLayer(unsigned int targetConnection); 
         void createWeights(unsigned int targetConnect, unsigned int targetNode);
