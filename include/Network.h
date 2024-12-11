@@ -36,6 +36,7 @@ class Network{
     private:
         /**********Utility Functions**********/
         ActivationFunctionPtr ActivationFunctionPtrs;
+        ActivationType Type;
 
         void createWeightLayer(unsigned int targetConnection); 
         void createWeights(unsigned int targetConnect, unsigned int targetNode);

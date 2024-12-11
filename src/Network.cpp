@@ -3,8 +3,8 @@
 
 #include <iostream>
 
-Network::Network(std::vector<unsigned int> _nodesCount, ActivationType Type) : nodesCount(_nodesCount), depth(nodesCount.size()), gen((unsigned int) time(NULL)){
-    this->ActivationFunctionPtrs = ActivationFunction::SetNetworkFunctions(Type);
+Network::Network(std::vector<unsigned int> _nodesCount, ActivationType _Type) : nodesCount(_nodesCount), depth(nodesCount.size()), gen((unsigned int) time(NULL)), Type(_Type){
+    this->ActivationFunctionPtrs = ActivationFunction::SetNetworkFunctions(_Type);
 
     buildNodeLayers();
     buildWeightLayers();
@@ -12,6 +12,7 @@ Network::Network(std::vector<unsigned int> _nodesCount, ActivationType Type) : n
 
 Network::Network(std::string fileName){
     import(fileName);
+    this->ActivationFunctionPtrs = ActivationFunction::SetNetworkFunctions(this->Type);
 }
 
 void Network::buildNodeLayers(){
@@ -38,6 +39,7 @@ void Network::save(std::string fileName){
     if (!networkFile.is_open()) {std::cout << "Unable to open file."; return;}
 
     //Save info
+    networkFile << this->Type << "\n";
     networkFile << this->depth << "\n";
     saveNodesCount(networkFile);
     saveBias(networkFile);
@@ -53,6 +55,9 @@ void Network::import(std::string fileName){
     if (!networkFile.is_open()) {std::cout << "Unable to open file."; return;}
 
     //Import info
+    int type;
+    networkFile >> type;
+    this->Type = (ActivationType) type;
     networkFile >> this->depth; 
     importNodesCount(networkFile);
     importBias(networkFile);

@@ -10,15 +10,6 @@ int main(){
     Network myNetwork = Network(nodeLayers, ReLU);
     myNetwork.save("test.txt");
 
-    if(!myNetwork.input({7, 3.5, 1})){return 0;}
-
-    myNetwork.printLayerVals(0);
-
-    myNetwork.pass();
-    
-    myNetwork.printLayerVals(1);
-
-    /*
     Network secondNetwork = Network("test.txt");
 
     if(!secondNetwork.input({7, 3.5, 1})){return 0;}
@@ -28,6 +19,6 @@ int main(){
     secondNetwork.pass();
     
     secondNetwork.printLayerVals(1);
-    */
+    
     return 0;
 }
