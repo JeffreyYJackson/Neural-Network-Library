@@ -91,33 +91,33 @@ void Network::pass(){
 void Network::printWeight(){
     std::cout << "Weigths:\n";
     int sum = 0;
-    for (std::vector<std::vector<float>> k: this->weights){
-        for(std::vector<float> i: k){
+    for (const auto& k: this->weights){
+        for(const auto& i: k){
             int count = 0;
-            for(float j: i){
-                std::cout << j << "\n";
+            for(const auto& j: i){
+                std::cout << j << '\n';
 
                 count++;
                 sum++;
             }
-            std::cout<<count<<"\n";
+            std::cout<<count<<'\n';
         }
     }
-    std::cout<<sum<<"\n";
+    std::cout<<sum<<'\n';
 }
 
 void Network::printLayerVals(unsigned int _i){
     std::cout << "Values:\n";
-    for (Node i: this->layers.at(_i)){
-        std::cout  << i.value << "\n";
+    for (const Node& i: this->layers.at(_i)){
+        std::cout  << i.value << '\n';
     }
 }
 
 void Network::saveNodesCount(std::ofstream &networkFile){
-    for (unsigned int i = 0; i < this->depth; i++){
-        networkFile << this->nodesCount.at(i) << ' ';
+    for (const auto& count: nodesCount){
+        networkFile << count << ' ';
     }
-    networkFile << "\n";
+    networkFile << '\n';
 }
 
 /****  Utility Functions  ****/
@@ -149,29 +149,29 @@ void Network::createWeights(unsigned int targetConnect, unsigned int targetNode)
 //Save Biases(Excluding input layer as the biasses are 0)
 void Network::saveBias(std::ofstream &networkFile){
     for(unsigned int i = 1; i < this->depth; i++){
-        for (unsigned int j = 0; j < this->nodesCount.at(i); j++){
-            networkFile << this->layers.at(i).at(j).bias << ' '; 
+        for(const auto& node: this->layers.at(i)){
+            networkFile << node.bias << ' ';
         }
-        networkFile << "\n";
+        networkFile << '\n';
     }
 }
 
 void Network::saveWeights(std::ofstream &networkFile){
-    for (unsigned int i = 0; i < this->depth - 1; i++){//Weight Layer
-        for (unsigned int j = 0; j < this->nodesCount.at(i + 1); j++){//Connected Layer(nth layer)
-            for (unsigned int k = 0; k < this->nodesCount.at(i); k++){//Connecting Layer(n-1th layer)
-                networkFile << this->weights.at(i).at(j).at(k) << ' ';
+    for (const auto& weightLayer: weights){
+        for (const auto& connectedNode: weightLayer){
+            for (const auto& inputNode: connectedNode){
+                networkFile << inputNode << ' ';
             }
-            networkFile << "\n";
+            networkFile << '\n';
         }
     }
 }
 
 void Network::importNodesCount(std::ifstream &networkFile){
     this->nodesCount = std::vector<unsigned int>(this->depth);
-    
-    for (unsigned int i = 0; i < this->depth; i++){
-        networkFile >> this->nodesCount.at(i);
+
+    for (auto& nodeCount: this->nodesCount){
+        networkFile >> nodeCount;
     }
 }
 
