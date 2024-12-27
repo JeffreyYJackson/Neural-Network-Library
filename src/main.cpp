@@ -1,11 +1,19 @@
-
-
 #include "..\include\Network.h"
 
 #include<iostream>
 
 //Main function for testing
 int main(){
+    Network Network;
+
+    Network.pushLayer(5);
+
+    Network.pushLayer(16);
+    Network.randomizeLayerWeights(1, ActivationFunction::ReLU_Random_Gen);
+
+    Network.printWeight();
+
+    /*
     std::vector<unsigned int> nodeLayers = {3, 4};
     Network myNetwork = Network(nodeLayers, ReLU);
     myNetwork.save("test.txt");
@@ -19,6 +27,7 @@ int main(){
     secondNetwork.pass();
     
     secondNetwork.printLayerVals(1);
-    
+    */
+
     return 0;
 }

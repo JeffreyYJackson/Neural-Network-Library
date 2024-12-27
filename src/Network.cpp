@@ -3,34 +3,104 @@
 
 #include <iostream>
 
-Network::Network(std::vector<unsigned int> _nodesCount, ActivationType _Type) : nodesCount(_nodesCount), depth(nodesCount.size()), gen((unsigned int) time(NULL)), Type(_Type){
-    this->ActivationFunctionPtrs = ActivationFunction::SetNetworkFunctions(_Type);
+//Network::Network(std::string fileName){
+//    import(fileName);
+//    this->ActivationFunctionPtrs = ActivationFunction::SetNetworkFunctions(this->Type);
+//}
 
-    buildNodeLayers();
-    buildWeightLayers();
+void Network::pushLayer(unsigned int nodeCount){
+    depth++;
+    nodesCount.push_back(nodeCount);
+
+    if(depth == 1){//if first, create a layer without weights.
+        layers.push_back(Layer(nodeCount));
+        return;
+    }
+    //if not first, create a layer with nodes and weights.
+    layers.push_back(Layer(nodeCount, nodesCount.at(depth-2)));
 }
 
-Network::Network(std::string fileName){
-    import(fileName);
-    this->ActivationFunctionPtrs = ActivationFunction::SetNetworkFunctions(this->Type);
+void Network::randomizeLayerWeights(unsigned int layerIndex, float (*activationFunctionRandomGen) (unsigned int, std::mt19937&)){
+    this->layers.at(layerIndex).randomizeWeights(activationFunctionRandomGen, this->gen);
 }
 
-void Network::buildNodeLayers(){
-    //Ceate new layers.
-    this->layers = std::vector<std::vector<Node>>(this->depth);
-    for(unsigned int i = 0; i < this->depth; i++) {
-        //Build next layer
-        this->layers.at(i) = std::vector<Node>(this->nodesCount.at(i));
+void Network::printWeight(){
+    std::cout << "Weigths:\n";
+    int sum = 0;
+
+    for (const auto& layer: layers){
+        for(const auto& connectedNode: layer.weights){
+            for (const auto& weight: connectedNode){
+                std::cout << weight << '\n';
+                sum++;
+            }
+        }
+    }
+    std::cout<<sum<<'\n';
+
+
+
+/*
+    for (const auto& k: this->weights){
+        for(const auto& i: k){
+            int count = 0;
+            for(const auto& j: i){
+                std::cout << j << '\n';
+
+                count++;
+                sum++;
+            }
+            std::cout<<count<<'\n';
+        }
+    }
+    std::cout<<sum<<'\n';
+    */
+}
+
+/*
+void Network::printWeight(){
+    std::cout << "Weigths:\n";
+    int sum = 0;
+    for (const auto& k: this->weights){
+        for(const auto& i: k){
+            int count = 0;
+            for(const auto& j: i){
+                std::cout << j << '\n';
+
+                count++;
+                sum++;
+            }
+            std::cout<<count<<'\n';
+        }
+    }
+    std::cout<<sum<<'\n';
+}
+
+
+
+
+
+
+
+
+void Network::printLayerVals(unsigned int _i){
+    std::cout << "Values:\n";
+    for (const Node& i: this->layers.at(_i)){
+        std::cout  << i.value << '\n';
     }
 }
 
-//Builds all of the weights between each layers of the Network.
-void Network::buildWeightLayers() {
-    this->weights = std::vector<std::vector<std::vector<float>>>(this->depth);
-    for(unsigned int i = 0; i < this->depth - 1; i++){
-        createWeightLayer(i);
-    }
-}
+
+*/
+
+
+
+
+
+
+
+/*
+
 
 void Network::save(std::string fileName){
     //Open File
@@ -88,30 +158,7 @@ void Network::pass(){
     }
 }
 
-void Network::printWeight(){
-    std::cout << "Weigths:\n";
-    int sum = 0;
-    for (const auto& k: this->weights){
-        for(const auto& i: k){
-            int count = 0;
-            for(const auto& j: i){
-                std::cout << j << '\n';
 
-                count++;
-                sum++;
-            }
-            std::cout<<count<<'\n';
-        }
-    }
-    std::cout<<sum<<'\n';
-}
-
-void Network::printLayerVals(unsigned int _i){
-    std::cout << "Values:\n";
-    for (const Node& i: this->layers.at(_i)){
-        std::cout  << i.value << '\n';
-    }
-}
 
 void Network::saveNodesCount(std::ofstream &networkFile){
     for (const auto& count: nodesCount){
@@ -122,30 +169,7 @@ void Network::saveNodesCount(std::ofstream &networkFile){
 
 /****  Utility Functions  ****/
 
-//Creates a group of weights which contains all the weights connecting all of the nodes in a layer to the nodes in the previous layer.
-void Network::createWeightLayer(unsigned int targetConnect) {
-    //Build weight vectors.
-    this->weights.at(targetConnect) = std::vector<std::vector<float>>(this->nodesCount.at(targetConnect + 1));
-    
-    //Call function to generate random weights for all nodes.
-    for (unsigned int i = 0; i < this->nodesCount.at(targetConnect + 1); i++){
-        //this->createWeights(targetConnect, i);
-        createWeights(targetConnect, i);
-    }
-}
-
-//Creates weights at random connecting a node to all of the nodes in the previous layer(nth connection between layers (layer n and n+1). n number of weights).
-void Network::createWeights(unsigned int targetConnect, unsigned int targetNode) {
-    //Build weights.
-    this->weights.at(targetConnect).at(targetNode) = std::vector<float>(this->nodesCount.at(targetConnect));
-
-    for(unsigned int i = 0; i < this->nodesCount.at(targetConnect); i++){
-        
-        this->weights.at(targetConnect).at(targetNode).at(i) = ActivationFunctionPtrs.randomGen(this->nodesCount, this->gen, targetConnect);
-        //this->weights.at(targetConnect).at(targetNode).at(i) = this->generateGaussian(0, sqrt((double)2/this->nodesCount.at(targetConnect)));
-    }
-}
-
+/*
 //Save Biases(Excluding input layer as the biasses are 0)
 void Network::saveBias(std::ofstream &networkFile){
     for(unsigned int i = 1; i < this->depth; i++){
@@ -217,3 +241,4 @@ void Network::calculateNodeValue(Node &targetNode, std::vector<Node> &inputNodes
     }
     targetNode.value = ActivationFunctionPtrs.activate(nodeVal);
 }
+*/

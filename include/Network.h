@@ -6,25 +6,28 @@
 #include <fstream>
 #include <time.h>
 
-#include"Node.h"
+#include"Layer.h"
 #include "ActivationFunction.h"
 
 class Network{
     public:
         std::vector<unsigned int> nodesCount;
-        unsigned int depth;
+        unsigned int depth = 0;
 
-        std::vector<std::vector<Node>> layers;
-        std::vector<std::vector<std::vector<float>>> weights;
+        std::vector<Layer> layers;
         
+        Network() : gen((unsigned int) time(NULL)){};
         Network(std::string fileName);
-        Network(std::vector<unsigned int> _nodesCount, ActivationType Type);
+        //Network(std::vector<unsigned int> _nodesCount, ActivationType Type);
         
+        void pushLayer(unsigned int nodeCount);
+
+        void randomizeLayerWeights(unsigned int layerIndex, float (*activationFunctionRandomGen) (unsigned int, std::mt19937&));
+
         std::mt19937 gen;
 
-        void buildNodeLayers();
-        void buildWeightLayers();
 
+/////////////////
         void save(std::string fileName);
         void import(std::string fileName);
 
@@ -35,11 +38,6 @@ class Network{
         void printLayerVals(unsigned int _i);
     private:
         /**********Utility Functions**********/
-        ActivationFunctionPtr ActivationFunctionPtrs;
-        ActivationType Type;
-
-        void createWeightLayer(unsigned int targetConnection); 
-        void createWeights(unsigned int targetConnect, unsigned int targetNode);
 
         void saveNodesCount(std::ofstream &networkFile);
         void saveBias(std::ofstream &networkFile);
