@@ -18,9 +18,9 @@ class Network{
         
         Network() : gen((unsigned int) time(NULL)){};
         Network(std::string fileName);
-        //Network(std::vector<unsigned int> _nodesCount, ActivationType Type);
         
-        void pushLayer(unsigned int nodeCount, float (*activationFunc) (float), float (*randomGen) (unsigned int input_Node_Count, std::mt19937 &_gen));
+        void pushLayer(unsigned int nodeCount, ActivationFunctionType _type);
+        void pushLayer(unsigned int nodeCount);
 
         void randomizeLayerWeights(unsigned int layerIndex);
 
@@ -32,7 +32,6 @@ class Network{
         void printWeight();
         void printLayerVals(unsigned int _i);
 
-/////////////////
         void save(std::string fileName);
         void import(std::string fileName);
 
@@ -40,10 +39,13 @@ class Network{
         /**********Utility Functions**********/
 
         void saveNodesCount(std::ofstream &networkFile);
+        void saveActivationType(std::ofstream &networkFile);
         void saveBias(std::ofstream &networkFile);
         void saveWeights(std::ofstream &networkFile);
 
         void importNodesCount(std::ifstream &networkFile);
+        void initializeLayers();
+        void importActivationType(std::ifstream &networkFile);
         void importBias(std::ifstream &networkFile);
         void importWeights(std::ifstream &networkFile);
 };

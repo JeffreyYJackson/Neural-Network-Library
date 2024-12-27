@@ -4,37 +4,29 @@
 
 //Main function for testing
 int main(){
-    Network Network;
+    Network myNetwork;
 
-    Network.pushLayer(5, ActivationFunction::ReLU, ActivationFunction::ReLU_Random_Gen);
+    myNetwork.pushLayer(1);
+    myNetwork.pushLayer(5, ReLU);
+    myNetwork.pushLayer(5, Sigmoid);
 
-    Network.pushLayer(5, ActivationFunction::ReLU, ActivationFunction::ReLU_Random_Gen);
-    Network.randomizeLayerWeights(1);
+    myNetwork.printWeight();
 
-    Network.printWeight();
+    if(!myNetwork.input({7})){return 0;}
+    myNetwork.pass();
+    myNetwork.printLayerVals(1);
 
-    if(!Network.input({7, 3.5, 3, 4, 5})){return 0;}
-
-    Network.pass();
-
-    Network.printLayerVals(1);
-
-
-    /*
-    std::vector<unsigned int> nodeLayers = {3, 4};
-    Network myNetwork = Network(nodeLayers, ReLU);
     myNetwork.save("test.txt");
 
-    Network secondNetwork = Network("test.txt");
+    std::cout << "new network\n";
 
-    if(!secondNetwork.input({7, 3.5, 1})){return 0;}
+    Network newNetwork = Network("test.txt");
 
-    secondNetwork.printLayerVals(0);
+    newNetwork.printWeight();
 
-    secondNetwork.pass();
+    if(!newNetwork.input({7})){return 0;}
+    newNetwork.pass();
+    newNetwork.printLayerVals(1);
     
-    secondNetwork.printLayerVals(1);
-    */
-
     return 0;
 }

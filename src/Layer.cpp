@@ -1,8 +1,11 @@
 #include "..\include\Layer.h"
 
-Layer::Layer(float (*_activationFunc) (float), float (*_randomGen) (unsigned int input_Node_Count, std::mt19937& _gen), unsigned int _nodeCount, unsigned int _inputNodeCount) : nodeCount(_nodeCount), inputCount(_inputNodeCount), activationFunc(_activationFunc), randomGen(_randomGen){
+Layer::Layer(ActivationFunctionType _type, unsigned int _nodeCount, unsigned int _inputNodeCount) :nodeCount(_nodeCount), inputCount(_inputNodeCount), type(_type){
     this->nodes = std::vector<Node>(nodeCount, Node(inputCount)); //Initialize nodes
-    //this->weights = std::vector<std::vector<float>>(nodeCount, std::vector<float>(inputCount)); //Initialize weights
+}
+
+Layer::Layer(unsigned int _nodeCount, unsigned int _inputNodeCount) : nodeCount(_nodeCount), inputCount(_inputNodeCount){
+    this->nodes = std::vector<Node>(nodeCount, Node(inputCount)); //Initialize nodes
 }
 
 void Layer::randomizeWeights(std::mt19937& gen){

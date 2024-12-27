@@ -2,6 +2,22 @@
 #include <iostream>
 #include <cmath>
 
+void ActivationFunction::SetActivationFunctions(ActivationFunctionType Type, float (*&activationFunc) (float), float (*&randomGen) (unsigned int input_Node_Count, std::mt19937 &_gen)){
+    switch (Type){
+    case ActivationFunctionType::ReLU:
+        activationFunc = ActivationFunction::ReLU;
+        randomGen = ActivationFunction::ReLU_Random_Gen;
+        break;
+    case ActivationFunctionType::Sigmoid:
+        activationFunc = ActivationFunction::Sigmoid;
+        randomGen = ActivationFunction::Sigmoid_Random_Gen;
+        break;
+    default:
+        return;
+        break;
+    }
+}
+
 float ActivationFunction::ReLU(float value){
     if (value < 0) {return 0;}
     return value;
