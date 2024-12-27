@@ -1,5 +1,6 @@
 #include "..\include/ActivationFunction.h"
 #include <iostream>
+#include <cmath>
 
 float ActivationFunction::ReLU(float value){
     if (value < 0) {return 0;}
@@ -11,10 +12,8 @@ float ActivationFunction::ReLU_Random_Gen(unsigned int input_Node_Count, std::mt
     return (float)dist(_gen);
 }
 
-
 float ActivationFunction::Sigmoid(float value){
-    if (value < 0) {return 0;}
-    return value;
+    return  1 / (1 + (float) exp(-value));
 }
 
 float ActivationFunction::Sigmoid_Random_Gen(unsigned int input_Node_Count, std::mt19937 &_gen){

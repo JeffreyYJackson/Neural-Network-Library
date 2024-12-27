@@ -6,12 +6,19 @@
 int main(){
     Network Network;
 
-    Network.pushLayer(5);
+    Network.pushLayer(5, ActivationFunction::ReLU, ActivationFunction::ReLU_Random_Gen);
 
-    Network.pushLayer(16);
-    Network.randomizeLayerWeights(1, ActivationFunction::ReLU_Random_Gen);
+    Network.pushLayer(5, ActivationFunction::ReLU, ActivationFunction::ReLU_Random_Gen);
+    Network.randomizeLayerWeights(1);
 
     Network.printWeight();
+
+    if(!Network.input({7, 3.5, 3, 4, 5})){return 0;}
+
+    Network.pass();
+
+    Network.printLayerVals(1);
+
 
     /*
     std::vector<unsigned int> nodeLayers = {3, 4};

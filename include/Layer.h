@@ -5,21 +5,24 @@
 
 struct Node
 {
+    Node(unsigned int inputCount):weights(std::vector<float>(inputCount)){}
     float value;
     float bias = 0;
+    std::vector<float> weights;
 };
 
 class Layer{
     public:
         std::vector<Node> nodes;
-        std::vector<std::vector<float>> weights;
-
         unsigned int nodeCount;
         unsigned int inputCount = 0;
 
-        Layer(unsigned int _nodeCount, unsigned int inputNodeCount);
-        Layer(unsigned int _nodeCount);
+        Layer(float (*activationFunc) (float), float (*randomGen) (unsigned int input_Node_Count, std::mt19937 &_gen), unsigned int _nodeCount, unsigned int inputNodeCount = 0);
+        void randomizeWeights(std::mt19937& gen);
 
-
-        void randomizeWeights(float (*randomGen) (unsigned int, std::mt19937&), std::mt19937& gen);
+        void calculateNodeValues(std::vector<Node>& inputNodes);
+    private:
+        //Activation Function related function pointers
+        float (*activationFunc) (float value);
+        float (*randomGen) (unsigned int input_Node_Count, std::mt19937 &_gen);
 };
