@@ -2,21 +2,18 @@
 #include <random>
 #include <vector>
 
-enum ActivationType{
-    ReLU
-};
-
-struct ActivationFunctionPtr
-{
-    float (*activate) (float);
-    float (*randomGen) (std::vector<unsigned int>, std::mt19937&, unsigned int);
+enum ActivationFunctionType{
+    ReLU,
+    Sigmoid
 };
 
 class ActivationFunction{
     public:
-        static ActivationFunctionPtr SetNetworkFunctions(ActivationType Type);
+        static void SetActivationFunctions(ActivationFunctionType Type, float (*&activationFunc) (float), float (*&randomGen) (unsigned int input_Node_Count, std::mt19937 &_gen));
 
         static float ReLU(float value);
+        static float ReLU_Random_Gen(unsigned int input_Node_Count, std::mt19937 &_gen);
 
-        static float ReLU_Random_Gen(std::vector<unsigned int> nodesCount, std::mt19937 &_gen, unsigned int targetConnect);
+        static float Sigmoid(float value);
+        static float Sigmoid_Random_Gen(unsigned int input_Node_Count, std::mt19937 &_gen);
 };

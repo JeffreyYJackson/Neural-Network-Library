@@ -6,49 +6,46 @@
 #include <fstream>
 #include <time.h>
 
-#include"Node.h"
+#include"Layer.h"
 #include "ActivationFunction.h"
 
 class Network{
     public:
         std::vector<unsigned int> nodesCount;
-        unsigned int depth;
+        unsigned int depth = 0;
 
-        std::vector<std::vector<Node>> layers;
-        std::vector<std::vector<std::vector<float>>> weights;
+        std::vector<Layer> layers;
         
+        Network() : gen((unsigned int) time(NULL)){};
         Network(std::string fileName);
-        Network(std::vector<unsigned int> _nodesCount, ActivationType Type);
         
+        void pushLayer(unsigned int nodeCount, ActivationFunctionType _type);
+        void pushLayer(unsigned int nodeCount);
+
+        void randomizeLayerWeights(unsigned int layerIndex);
+
         std::mt19937 gen;
-
-        void buildNodeLayers();
-        void buildWeightLayers();
-
-        void save(std::string fileName);
-        void import(std::string fileName);
 
         int input(std::vector<float> inputs);
         void pass();
 
         void printWeight();
         void printLayerVals(unsigned int _i);
+
+        void save(std::string fileName);
+        void import(std::string fileName);
+
     private:
         /**********Utility Functions**********/
-        ActivationFunctionPtr ActivationFunctionPtrs;
-        ActivationType Type;
-
-        void createWeightLayer(unsigned int targetConnection); 
-        void createWeights(unsigned int targetConnect, unsigned int targetNode);
 
         void saveNodesCount(std::ofstream &networkFile);
+        void saveActivationType(std::ofstream &networkFile);
         void saveBias(std::ofstream &networkFile);
         void saveWeights(std::ofstream &networkFile);
 
         void importNodesCount(std::ifstream &networkFile);
+        void initializeLayers();
+        void importActivationType(std::ifstream &networkFile);
         void importBias(std::ifstream &networkFile);
         void importWeights(std::ifstream &networkFile);
-
-        void calculateLayerValue(std::vector<Node> &layerNodes, std::vector<Node> &inputLayerNodes, std::vector<std::vector<float>> &weightLayer);
-        void calculateNodeValue(Node &targetNode, std::vector<Node> &inputNodes, std::vector<float> _weights);
 };

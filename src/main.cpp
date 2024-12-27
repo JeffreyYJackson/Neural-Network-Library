@@ -1,24 +1,32 @@
-
-
 #include "..\include\Network.h"
 
 #include<iostream>
 
 //Main function for testing
 int main(){
-    std::vector<unsigned int> nodeLayers = {3, 4};
-    Network myNetwork = Network(nodeLayers, ReLU);
+    Network myNetwork;
+
+    myNetwork.pushLayer(1);
+    myNetwork.pushLayer(5, ReLU);
+    myNetwork.pushLayer(5, Sigmoid);
+
+    myNetwork.printWeight();
+
+    if(!myNetwork.input({7})){return 0;}
+    myNetwork.pass();
+    myNetwork.printLayerVals(1);
+
     myNetwork.save("test.txt");
 
-    Network secondNetwork = Network("test.txt");
+    std::cout << "new network\n";
 
-    if(!secondNetwork.input({7, 3.5, 1})){return 0;}
+    Network newNetwork = Network("test.txt");
 
-    secondNetwork.printLayerVals(0);
+    newNetwork.printWeight();
 
-    secondNetwork.pass();
-    
-    secondNetwork.printLayerVals(1);
+    if(!newNetwork.input({7})){return 0;}
+    newNetwork.pass();
+    newNetwork.printLayerVals(1);
     
     return 0;
 }
