@@ -7,10 +7,14 @@
 
 struct Node
 {
-    Node(unsigned int inputCount):weights(std::vector<float>(inputCount)){}
+    Node(unsigned int inputCount):weights(std::vector<float>(inputCount)), weightsGradient(std::vector<float>(inputCount)){}
+
     float value;
     float bias = 0;
     std::vector<float> weights;
+
+    float biasGradient = 0;
+    std::vector<float> weightsGradient;
 };
 
 class Layer{

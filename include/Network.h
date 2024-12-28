@@ -29,6 +29,16 @@ class Network{
         int input(std::vector<float> inputs);
         void pass();
 
+        std::vector<std::vector<float>> trainingData;
+        std::vector<std::vector<float>> expectedValues;
+
+        float loss(std::vector<float> expectedOutput);
+        float cost();
+
+        void aproximateGradient();
+        void approximateBias(Node& node);
+        void approximateWeights(Node& node);
+
         void printWeight();
         void printLayerVals(unsigned int _i);
 

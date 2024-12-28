@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+#define APPROXIMATION_CONST (float)0.1
+
 Network::Network(std::string fileName){
     import(fileName);
 }
@@ -49,6 +51,73 @@ int Network::input(std::vector<float> inputs){
 void Network::pass(){
     for (unsigned int i = 1; i < depth; i++){
         layers.at(i).calculateNodeValues(layers.at(i-1).nodes);
+    }
+}
+
+float Network::loss(std::vector<float> expectedOutput){
+    if(expectedOutput.size() != nodesCount.back()){
+        std::cout << "Expected output does not match output layer size" << '\n';
+    }
+
+    float loss = 0;
+
+    for (unsigned int i = 0; i < layers.back().nodeCount; i++){
+        loss += 0.5 * (expectedOutput.at(i) - layers.back().nodes.at(i).value);
+    }
+
+    return loss;
+}
+
+float Network::cost(){
+    float cost = 0;
+    for (unsigned int i = 0; i < trainingData.size(); i++){//Add up the loss of each training value.
+        input(trainingData.at(i));
+        pass();
+        cost += loss(expectedValues.at(i));
+    }
+
+    cost = cost / (float)trainingData.size(); //Average of all loss values.
+    return cost;
+}
+
+
+void Network::aproximateGradient(){
+    for (unsigned int i = 1; i < depth; i++){
+        for(auto& node: layers.at(i).nodes){
+            approximateBias(node);
+            approximateWeights(node);
+        }
+    }
+}
+
+void Network::approximateBias(Node& _node){
+    float biasInit = _node.bias;
+    float costInit = cost();
+
+    float biasFinal = biasInit + APPROXIMATION_CONST;
+    _node.bias = biasFinal;
+    float costFinal = cost();
+
+    float gradient = (costFinal - costInit)/(biasFinal - biasInit);
+    
+    _node.bias = biasInit;
+    _node.biasGradient = gradient;
+}
+
+void Network::approximateWeights(Node& _node){
+    for (unsigned int i = 0; i < _node.weights.size(); i++){
+
+        float weightInit = _node.weights.at(i);
+        float costInit = cost();
+
+        float weightFinal = weightInit + APPROXIMATION_CONST;
+        _node.weights.at(i) = weightFinal;
+        float costFinal = cost();
+
+        float gradient = (costFinal - costInit)/(weightFinal - weightInit);
+
+        _node.weights.at(i) = weightInit;
+        _node.weightsGradient.at(i) = gradient;
     }
 }
 
