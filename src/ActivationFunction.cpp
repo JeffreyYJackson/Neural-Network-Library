@@ -12,6 +12,10 @@ void ActivationFunction::SetActivationFunctions(ActivationFunctionType Type, flo
         activationFunc = ActivationFunction::Sigmoid;
         randomGen = ActivationFunction::Sigmoid_Random_Gen;
         break;
+    case ActivationFunctionType::Linear:
+        activationFunc = ActivationFunction::Linear;
+        randomGen = ActivationFunction::Sigmoid_Random_Gen;
+        break;
     default:
         return;
         break;
@@ -35,4 +39,8 @@ float ActivationFunction::Sigmoid(float value){
 float ActivationFunction::Sigmoid_Random_Gen(unsigned int input_Node_Count, std::mt19937 &_gen){
     std::normal_distribution<> dist(0, sqrt((double)2/input_Node_Count));
     return (float)dist(_gen);
+}
+
+float ActivationFunction::Linear(float value){
+    return value;
 }

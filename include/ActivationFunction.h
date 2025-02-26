@@ -4,7 +4,8 @@
 
 enum ActivationFunctionType{
     ReLU,
-    Sigmoid
+    Sigmoid,
+    Linear
 };
 
 class ActivationFunction{
@@ -16,4 +17,6 @@ class ActivationFunction{
 
         static float Sigmoid(float value);
         static float Sigmoid_Random_Gen(unsigned int input_Node_Count, std::mt19937 &_gen);
+
+        static float Linear(float value);
 };

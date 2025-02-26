@@ -2,8 +2,9 @@
 #include "..\include\ActivationFunction.h"
 
 #include <iostream>
+#include <math.h>
 
-#define APPROXIMATION_CONST (float)0.1
+#define APPROXIMATION_CONST (float)0.05
 
 Network::Network(std::string fileName){
     import(fileName);
@@ -62,7 +63,7 @@ float Network::loss(std::vector<float> expectedOutput){
     float loss = 0;
 
     for (unsigned int i = 0; i < layers.back().nodeCount; i++){
-        loss += 0.5 * (expectedOutput.at(i) - layers.back().nodes.at(i).value);
+        loss += 0.5 * pow((expectedOutput.at(i) - layers.back().nodes.at(i).value), 2);
     }
 
     return loss;
@@ -81,7 +82,7 @@ float Network::cost(){
 }
 
 
-void Network::aproximateGradient(){
+void Network::approximateGradients(){
     for (unsigned int i = 1; i < depth; i++){
         for(auto& node: layers.at(i).nodes){
             approximateBias(node);
@@ -120,6 +121,29 @@ void Network::approximateWeights(Node& _node){
         _node.weightsGradient.at(i) = gradient;
     }
 }
+
+void Network::gradientDescent(float trainingSpeed, unsigned int trainingNum){
+    for(unsigned int i = 1; i <= trainingNum; i++){
+        approximateGradients();
+
+        for (unsigned int j = 1; j < depth; j++){
+            for(auto& node: layers.at(j).nodes){
+                //Adjust bias
+                node.bias -= node.biasGradient * trainingSpeed;
+
+                //Adjust Weight
+                for (unsigned int k = 0; k < node.weights.size(); k++){
+                    node.weights.at(k) -= node.weightsGradient.at(k) * trainingSpeed;
+                }
+            }
+        }
+
+        std::cout << "cost " << i << ": " << cost() << '\n';
+    }
+}
+
+
+
 
 void Network::printWeight(){
     std::cout << "Weigths:\n";

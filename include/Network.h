@@ -35,9 +35,11 @@ class Network{
         float loss(std::vector<float> expectedOutput);
         float cost();
 
-        void aproximateGradient();
+        void approximateGradients();
         void approximateBias(Node& node);
         void approximateWeights(Node& node);
+
+        void gradientDescent(float trainingSpeed, unsigned int trainingNum);
 
         void printWeight();
         void printLayerVals(unsigned int _i);
